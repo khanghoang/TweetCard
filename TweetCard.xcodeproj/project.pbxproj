@@ -21,6 +21,7 @@
 		B47CED93181D6BB7004F65DC /* TweetCardTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B47CED92181D6BB7004F65DC /* TweetCardTests.m */; };
 		B47CED9E181D6CFF004F65DC /* TCTweetCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B47CED9D181D6CFF004F65DC /* TCTweetCardViewController.m */; };
 		B47CEDA1181D6F36004F65DC /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = B47CEDA0181D6F36004F65DC /* UIView+Additions.m */; };
+		B47CEDA5181D71A2004F65DC /* TCTweetCard.m in Sources */ = {isa = PBXBuildFile; fileRef = B47CEDA4181D71A2004F65DC /* TCTweetCard.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,6 +55,8 @@
 		B47CED9D181D6CFF004F65DC /* TCTweetCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCTweetCardViewController.m; sourceTree = "<group>"; };
 		B47CED9F181D6F36004F65DC /* UIView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
 		B47CEDA0181D6F36004F65DC /* UIView+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Additions.m"; sourceTree = "<group>"; };
+		B47CEDA3181D71A2004F65DC /* TCTweetCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TCTweetCard.h; sourceTree = "<group>"; };
+		B47CEDA4181D71A2004F65DC /* TCTweetCard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TCTweetCard.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +123,8 @@
 				B47CED74181D6BB7004F65DC /* Supporting Files */,
 				B47CED9C181D6CFF004F65DC /* TCTweetCardViewController.h */,
 				B47CED9D181D6CFF004F65DC /* TCTweetCardViewController.m */,
+				B47CEDA3181D71A2004F65DC /* TCTweetCard.h */,
+				B47CEDA4181D71A2004F65DC /* TCTweetCard.m */,
 			);
 			path = TweetCard;
 			sourceTree = "<group>";
@@ -262,6 +267,7 @@
 				B47CED7A181D6BB7004F65DC /* main.m in Sources */,
 				B47CED7E181D6BB7004F65DC /* TCAppDelegate.m in Sources */,
 				B47CED9E181D6CFF004F65DC /* TCTweetCardViewController.m in Sources */,
+				B47CEDA5181D71A2004F65DC /* TCTweetCard.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
