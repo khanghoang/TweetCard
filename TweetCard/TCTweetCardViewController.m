@@ -17,6 +17,7 @@ TCTweetCardDelegate
 >
 
 @property (strong, nonatomic) NSMutableArray *tweetCards;
+@property (assign, nonatomic) CGAffineTransform firstTweetCardAffine;
 
 @end
 
@@ -44,6 +45,10 @@ TCTweetCardDelegate
         [tweetCard rotateTweetCardWithDuration:0.5 + 0.1 * i withDegree: BEGIN_DEGREE + 140/8 * i];
         [self.view addSubview:tweetCard];
         
+        if (i == 0) {
+            self.firstTweetCardAffine = tweetCard.transform;
+        }
+        
         [self.tweetCards addObject:tweetCard];
     }
 
@@ -63,6 +68,7 @@ TCTweetCardDelegate
     }
     
     [self swapTweetCardFromLastToFirst];
+    [self restoreMovedOutTweetCard:[self.tweetCards firstObject]];
 }
 
 - (void)swapTweetCardFromLastToFirst
@@ -74,7 +80,9 @@ TCTweetCardDelegate
 
 - (void)restoreMovedOutTweetCard:(TCTweetCard *)tweetCard
 {
-    
+    [UIView animateWithDuration:2 animations:^{
+        tweetCard.transform = self.firstTweetCardAffine;
+    }];
 }
 
 @end
