@@ -8,8 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
+@class TCTweetCard;
+
 @protocol TCTweetCardDelegate <NSObject>
 
+- (void)tweetCardDidBeginMove:(TCTweetCard *)tweetCard withPoint:(CGPoint)point;
+- (void)tweetCardDidMove:(TCTweetCard *)tweetCard withPoint:(CGPoint)point;
+- (void)tweetCardDidEndMove:(TCTweetCard *)tweetCard;
 - (void)tweetCardFinishMoveOutScreen;
 
 @end

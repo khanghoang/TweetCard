@@ -19,9 +19,31 @@ TCTweetCardDelegate
 @property (strong, nonatomic) NSMutableArray *tweetCards;
 @property (assign, nonatomic) CGAffineTransform firstTweetCardAffine;
 
+@property (strong, nonatomic) UIDynamicAnimator *animator;
+@property (strong, nonatomic) UIGravityBehavior *gravity;
+@property (strong, nonatomic) UIAttachmentBehavior *attachment;
+
 @end
 
 @implementation TCTweetCardViewController
+
+- (UIDynamicAnimator *)animator
+{
+    if (!_animator) {
+        _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
+    }
+
+    return _animator;
+}
+
+- (UIGravityBehavior *)gravity
+{
+    if (!_gravity) {
+        _gravity = [[UIGravityBehavior alloc] initWithItems:@[]];
+    }
+
+    return _gravity;
+}
 
 - (NSArray *)tweetCards
 {
@@ -52,6 +74,7 @@ TCTweetCardDelegate
         [self.tweetCards addObject:tweetCard];
     }
 
+    [self.animator addBehavior:self.gravity];
 }
 
 #pragma mark - TweetCard delegate
@@ -83,6 +106,31 @@ TCTweetCardDelegate
     [UIView animateWithDuration:2 animations:^{
         tweetCard.transform = self.firstTweetCardAffine;
     }];
+}
+
+- (void)tweetCardDidBeginMove:(TCTweetCard *)tweetCard withPoint:(CGPoint)point
+{
+    CGPoint newPoint = [tweetCard convertPoint:point toView:self.view];
+
+    UIOffset offset = UIOffsetMake(point.x - tweetCard.bounds.size.width/2, point.y - tweetCard.bounds.size.height/2);
+    self.attachment = [[UIAttachmentBehavior alloc] initWithItem:tweetCard
+                                                offsetFromCenter:offset
+                                                attachedToAnchor:newPoint];
+    [self.animator addBehavior:self.attachment];
+    [self.gravity addItem:tweetCard];
+    DLog(@"Tweet card begin  %@", NSStringFromCGPoint(newPoint));
+}
+
+- (void)tweetCardDidMove:(TCTweetCard *)tweetCard withPoint:(CGPoint)point
+{
+    CGPoint newPoint = [tweetCard convertPoint:point toView:self.view];
+    DLog(@"Tweet card has moved %@", NSStringFromCGPoint(newPoint));
+    self.attachment.anchorPoint = newPoint;
+}
+
+- (void)tweetCardDidEndMove:(TCTweetCard *)tweetCard
+{
+    [self.animator removeBehavior:self.attachment];
 }
 
 @end

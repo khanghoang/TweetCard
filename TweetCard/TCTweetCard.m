@@ -18,6 +18,7 @@ UIGestureRecognizerDelegate
 @property (assign, nonatomic) CGPoint currentPoint;
 @property (assign, nonatomic) CGFloat lastDx;
 @property (assign, nonatomic) CGFloat lastDy;
+@property (assign, nonatomic) BOOL isMoving;
 
 @end
 
@@ -55,29 +56,34 @@ UIGestureRecognizerDelegate
     if (panGesture.state == UIGestureRecognizerStateBegan) {
         self.currentPoint = [panGesture locationInView:self];
     }
-    
-    CGPoint newLocation = [panGesture locationInView:self];
-    float dX = newLocation.x - self.currentPoint.x;
-    float dY = newLocation.y - self.currentPoint.y;
-    
-    CGRect currentFrame = self.frame;
-    currentFrame.origin.x += dX;
-    currentFrame.origin.y += dY;
-    
-    self.lastDx = dX != 0 ? dX : self.lastDx;
-    self.lastDy = dY != 0 ? dY : self.lastDy;
-    
-    [UIView animateWithDuration:0 animations:^{
-        self.transform = CGAffineTransformTranslate(self.transform, dX, dY);
-    }];
-    
+
+    self.currentPoint = [panGesture locationInView:self];
+
+    if (!self.isMoving) {
+        if ([self.delegate respondsToSelector:@selector(tweetCardDidBeginMove:withPoint:)]) {
+            [self.delegate tweetCardDidBeginMove:self withPoint:self.currentPoint];
+        }
+        self.isMoving = YES;
+    }
+
+    if (self.isMoving) {
+        if([self.delegate respondsToSelector:@selector(tweetCardDidMove:withPoint:)]){
+            [self.delegate tweetCardDidMove:self withPoint:self.currentPoint];
+        }
+    }
+
     if (panGesture.state == UIGestureRecognizerStateEnded) {
-        
         [UIView animateWithDuration:2 animations:^{
             self.transform = CGAffineTransformTranslate(self.transform, self.width * self.lastDx, self.height * self.lastDy);
         } completion:^(BOOL finished) {
             [self finishMoveOut];
         }];
+
+        if ([self.delegate respondsToSelector:@selector(tweetCardDidEndMove:)]) {
+            [self.delegate tweetCardDidEndMove:self];
+        }
+
+        self.isMoving = NO;
     }
 }
 
