@@ -132,11 +132,34 @@ TCTweetCardDelegate
 {
     [self.animator removeAllBehaviors];
     [self.animator addBehavior:self.gravity];
+
+    [tweetCard addObserver:self forKeyPath:@"tweetCard" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    TCTweetCard *card = (TCTweetCard *)object;
+    CGRect animation = [[card.layer presentationLayer] frame];
+    CGFloat y = CGRectGetMinY(animation);
+    NSLog(@"Rect = %@", NSStringFromCGRect(animation));
+    NSLog(@"Min Y is : %f", y);
+    if ( y >= 568) {
+        NSLog(@"Card out of screen");
+    }
+}
+
+- (void)animationCardToTheGroup:(TCTweetCard *)tweetCard
+{
     [self.gravity removeItem:tweetCard];
     UISnapBehavior *snap = [[UISnapBehavior alloc] initWithItem:tweetCard
                                                     snapToPoint:CGPointMake(160, 284)];
     snap.damping = 1.0;
     [self.animator addBehavior:snap];
+}
+
+- (void)tweetCardFinishMoveOutScreen:(TCTweetCard *)tweetCard
+{
+    [self animationCardToTheGroup:tweetCard];
 }
 
 @end

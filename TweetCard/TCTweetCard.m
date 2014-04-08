@@ -76,7 +76,7 @@ UIGestureRecognizerDelegate
         [UIView animateWithDuration:2 animations:^{
             self.transform = CGAffineTransformTranslate(self.transform, self.width * self.lastDx, self.height * self.lastDy);
         } completion:^(BOOL finished) {
-            [self finishMoveOut];
+//            [self finishMoveOut];
         }];
 
         if ([self.delegate respondsToSelector:@selector(tweetCardDidEndMove:)]) {
@@ -89,8 +89,8 @@ UIGestureRecognizerDelegate
 
 - (void)finishMoveOut
 {
-    if ([self.delegate respondsToSelector:@selector(tweetCardFinishMoveOutScreen)]) {
-        [self.delegate performSelector:@selector(tweetCardFinishMoveOutScreen)];
+    if ([self.delegate respondsToSelector:@selector(tweetCardFinishMoveOutScreen:)]) {
+        [self.delegate tweetCardFinishMoveOutScreen:self];
     }
 }
 
@@ -114,6 +114,22 @@ UIGestureRecognizerDelegate
     [UIView animateWithDuration:0 animations:^{
         self.transform = CGAffineTransformTranslate(self.transform, dX, dY);
     }];
+}
+
+- (void)layoutSubviews
+{
+    CGFloat y = CGRectGetMinY(self.frame);
+    NSLog(@"Rect = %@", NSStringFromCGRect(self.frame));
+
+    NSLog(@"Min Y is : %f", y);
+    if ( y >= 568) {
+        NSLog(@"Card out of screen");
+        if ([self.delegate respondsToSelector:@selector(tweetCardFinishMoveOutScreen:)]) {
+            [self.delegate tweetCardFinishMoveOutScreen:self];
+        }
+    }
+
+    [super layoutSubviews];
 }
 
 @end

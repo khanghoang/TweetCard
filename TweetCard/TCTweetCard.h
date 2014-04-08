@@ -15,7 +15,7 @@
 - (void)tweetCardDidBeginMove:(TCTweetCard *)tweetCard withPoint:(CGPoint)point;
 - (void)tweetCardDidMove:(TCTweetCard *)tweetCard withPoint:(CGPoint)point;
 - (void)tweetCardDidEndMove:(TCTweetCard *)tweetCard;
-- (void)tweetCardFinishMoveOutScreen;
+- (void)tweetCardFinishMoveOutScreen:(TCTweetCard *)tweetCard;
 
 @end
 
