@@ -15,7 +15,6 @@
 UIGestureRecognizerDelegate
 >
 
-@property (assign, nonatomic) CGPoint currentPoint;
 @property (assign, nonatomic) CGFloat lastDx;
 @property (assign, nonatomic) CGFloat lastDy;
 @property (assign, nonatomic) BOOL isMoving;
@@ -53,9 +52,9 @@ UIGestureRecognizerDelegate
 }
 
 - (void)onDragging:(UIPanGestureRecognizer *)panGesture{
-    if (panGesture.state == UIGestureRecognizerStateBegan) {
-        self.currentPoint = [panGesture locationInView:self];
-    }
+//    if (panGesture.state == UIGestureRecognizerStateBegan) {
+//        self.currentPoint = [panGesture locationInView:self];
+//    }
 
     self.currentPoint = [panGesture locationInView:self];
 
@@ -73,6 +72,7 @@ UIGestureRecognizerDelegate
     }
 
     if (panGesture.state == UIGestureRecognizerStateEnded) {
+
         [UIView animateWithDuration:2 animations:^{
             self.transform = CGAffineTransformTranslate(self.transform, self.width * self.lastDx, self.height * self.lastDy);
         } completion:^(BOOL finished) {
@@ -97,6 +97,23 @@ UIGestureRecognizerDelegate
 - (CGFloat)angleOfThisRotate
 {
     return atan2(self.transform.b, self.transform.a) * 180 / M_PI;
+}
+
+- (void)backToTheGroupWithCurrentPanPosition:(CGPoint)currentPoint
+{
+    float dX = currentPoint.x - self.currentPoint.x;
+    float dY = currentPoint.y - self.currentPoint.y;
+    
+    CGRect currentFrame = self.frame;
+    currentFrame.origin.x += dX;
+    currentFrame.origin.y += dY;
+    
+    self.lastDx = dX != 0 ? dX : self.lastDx;
+    self.lastDy = dY != 0 ? dY : self.lastDy;
+    
+    [UIView animateWithDuration:0 animations:^{
+        self.transform = CGAffineTransformTranslate(self.transform, dX, dY);
+    }];
 }
 
 @end

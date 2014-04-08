@@ -22,6 +22,9 @@
 @interface TCTweetCard : UIView
 
 @property (strong, nonatomic) id<TCTweetCardDelegate> delegate;
+@property (assign, nonatomic) CGPoint currentPoint;
+
+- (void)backToTheGroupWithCurrentPanPosition:(CGPoint)currentPoint;
 
 - (void)rotateTweetCardWithDuration:(CGFloat)time withDegree:(CGFloat)degree;
 - (CGFloat)angleOfThisRotate;

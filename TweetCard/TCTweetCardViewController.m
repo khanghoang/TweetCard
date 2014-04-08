@@ -130,7 +130,13 @@ TCTweetCardDelegate
 
 - (void)tweetCardDidEndMove:(TCTweetCard *)tweetCard
 {
-    [self.animator removeBehavior:self.attachment];
+    [self.animator removeAllBehaviors];
+    [self.animator addBehavior:self.gravity];
+    [self.gravity removeItem:tweetCard];
+    UISnapBehavior *snap = [[UISnapBehavior alloc] initWithItem:tweetCard
+                                                    snapToPoint:CGPointMake(160, 284)];
+    snap.damping = 1.0;
+    [self.animator addBehavior:snap];
 }
 
 @end
