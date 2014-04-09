@@ -79,8 +79,8 @@ UIGestureRecognizerDelegate
 //            [self finishMoveOut];
         }];
 
-        if ([self.delegate respondsToSelector:@selector(tweetCardDidEndMove:)]) {
-            [self.delegate tweetCardDidEndMove:self];
+        if ([self.delegate respondsToSelector:@selector(tweetCardDidEndMove:withLastGesture:)]) {
+            [self.delegate tweetCardDidEndMove:self withLastGesture:panGesture];
         }
 
         self.isMoving = NO;

@@ -128,13 +128,21 @@ TCTweetCardDelegate
     self.attachment.anchorPoint = newPoint;
 }
 
-- (void)tweetCardDidEndMove:(TCTweetCard *)tweetCard
+- (void)tweetCardDidEndMove:(TCTweetCard *)tweetCard withLastGesture:(UIPanGestureRecognizer *)lastPanGesture
 {
     [self.animator removeAllBehaviors];
+
+    CGPoint vel = [lastPanGesture velocityInView:self.view];
+    UIDynamicItemBehavior* behaviour = [[UIDynamicItemBehavior alloc] initWithItems:@[tweetCard]];
+    CGFloat angle = 0.5;
+    [behaviour addAngularVelocity:angle forItem:tweetCard];
+    [behaviour addLinearVelocity:vel forItem:tweetCard];
+
+    [self.animator addBehavior:behaviour];
     [self.animator addBehavior:self.gravity];
 
     __weak TCTweetCardViewController *weakSelf = self;
-    self.gravity.action = ^{
+    behaviour.action = ^{
         CGFloat padding = 100;
         if (CGRectGetMinY(tweetCard.frame) > 568 + padding) {
             [weakSelf tweetCardFinishMoveOutScreen:tweetCard];
