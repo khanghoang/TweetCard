@@ -133,19 +133,13 @@ TCTweetCardDelegate
     [self.animator removeAllBehaviors];
     [self.animator addBehavior:self.gravity];
 
-    [tweetCard addObserver:self forKeyPath:@"tweetCard" options:NSKeyValueObservingOptionNew context:nil];
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    TCTweetCard *card = (TCTweetCard *)object;
-    CGRect animation = [[card.layer presentationLayer] frame];
-    CGFloat y = CGRectGetMinY(animation);
-    NSLog(@"Rect = %@", NSStringFromCGRect(animation));
-    NSLog(@"Min Y is : %f", y);
-    if ( y >= 568) {
-        NSLog(@"Card out of screen");
-    }
+    __weak TCTweetCardViewController *weakSelf = self;
+    self.gravity.action = ^{
+        CGFloat padding = 100;
+        if (CGRectGetMinY(tweetCard.frame) > 568 + padding) {
+            [weakSelf tweetCardFinishMoveOutScreen:tweetCard];
+        }
+    };
 }
 
 - (void)animationCardToTheGroup:(TCTweetCard *)tweetCard
